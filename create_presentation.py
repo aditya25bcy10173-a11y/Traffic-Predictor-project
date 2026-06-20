@@ -331,7 +331,7 @@ ui_points = [
     "Accessibility & Indian Branding: Features standard GOV.IN accessibility options (Screen Reader, font size controls A+/A/A-) alongside a thin horizontal Saffron/White/Green tricolor band and inline national flag icon.",
     "Interactive Chatbox Interface: Redesigns the Adhira AI Assistant into an overlay dialogue box with speech bubbles, Nic badges, avatars, and 3 quick-command chips (IPL Match, Silk Board Flood, Peenya Anomaly).",
     "Command Dispatch Order: Outputs forecasts in a formal, authenticated government memorandum layout containing simulated barcodes, approval stamps, IPS signatures, and dispatch registers.",
-    "Simple Map GIS Integrations: Clean 2D GIS overlay maps plotted in real-time using historical coordinates from D:\flip.csv."
+    "Simple Map GIS Integrations: Clean 2D GIS overlay maps plotted in real-time using historical coordinates from flip.csv."
 ]
 for pt in ui_points:
     p_pt = tf_portal.add_paragraph()

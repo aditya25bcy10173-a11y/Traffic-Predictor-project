@@ -9,7 +9,7 @@ import lightgbm as lgb
 from catboost import CatBoostRegressor
 
 # 1. Load and prepare data (same preprocessing logic as model.py)
-df = pd.read_csv(r"D:\flip.csv")
+df = pd.read_csv(r"flip.csv")
 df['start_dt'] = pd.to_datetime(df['start_datetime'], errors='coerce')
 df['resolved_dt'] = pd.to_datetime(df['resolved_datetime'], errors='coerce')
 df['closed_dt'] = pd.to_datetime(df['closed_datetime'], errors='coerce')

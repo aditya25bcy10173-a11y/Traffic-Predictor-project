@@ -12,7 +12,7 @@ from sklearn.metrics import mean_absolute_error, r2_score
 
 def generate_plots():
     print("Generating model validation and calibration charts...")
-    base_file = r"D:\flip.csv"
+    base_file = r"flip.csv"
     if not os.path.exists(base_file):
         print(f"Base file {base_file} not found.")
         return False

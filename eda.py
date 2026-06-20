@@ -75,4 +75,4 @@ def run_eda(file_path):
     print(f"\nCleaned dataset size (0 < duration <= 7 days): {len(df_clean)}")
     
 if __name__ == "__main__":
-    run_eda(r"D:\flip.csv")
+    run_eda(r"flip.csv")

@@ -94,7 +94,7 @@ class TabularResNet(nn.Module):
 # 2. LOAD AND PROCESS DATA
 # ─────────────────────────────────────────────────────────
 print("Preparing dataset...")
-df = pd.read_csv(r"D:\flip.csv")
+df = pd.read_csv(r"flip.csv")
 
 # Compute target: duration in minutes
 df['start_dt'] = pd.to_datetime(df['start_datetime'], errors='coerce')

@@ -292,4 +292,4 @@ def train_hybrid_ensemble(file_path):
     print("CatBoost model saved to catboost_model.cbm.")
 
 if __name__ == "__main__":
-    train_hybrid_ensemble(r"D:\flip.csv")
+    train_hybrid_ensemble(r"flip.csv")

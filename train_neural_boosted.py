@@ -96,7 +96,7 @@ class TabularResNet(nn.Module):
 # 2. PREPARE DATA
 # ─────────────────────────────────────────────────────────
 print("Loading data...")
-df = pd.read_csv(r"D:\flip.csv")
+df = pd.read_csv(r"flip.csv")
 
 df['start_dt'] = pd.to_datetime(df['start_datetime'], errors='coerce')
 df['resolved_dt'] = pd.to_datetime(df['resolved_datetime'], errors='coerce')

@@ -26,7 +26,7 @@ def run_retraining():
     finally:
         conn.close()
         
-    base_file = r"D:\flip.csv"
+    base_file = r"flip.csv"
     if not os.path.exists(base_file):
         print(f"Base training file {base_file} not found. Cannot proceed with retraining.")
         return False
@@ -35,7 +35,7 @@ def run_retraining():
     print(f"New operator feedback records: {len(feedback_df)}")
     
     if len(feedback_df) > 0:
-        # Convert feedback rows into baseline D:\flip.csv format
+        # Convert feedback rows into baseline flip.csv format
         new_rows = []
         for _, row in feedback_df.iterrows():
             try:

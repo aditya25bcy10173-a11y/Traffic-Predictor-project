@@ -629,7 +629,7 @@ st.markdown(f"""
 # ─────────────────────────────────────────────────────────
 @st.cache_data
 def load_historical_data():
-    df = pd.read_csv(r"D:\flip.csv")
+    df = pd.read_csv(r"flip.csv")
     df = df.dropna(subset=['latitude', 'longitude'])
     df = df[(df['latitude'] >= 12.8) & (df['latitude'] <= 13.3)]
     df = df[(df['longitude'] >= 77.3) & (df['longitude'] <= 77.8)]
