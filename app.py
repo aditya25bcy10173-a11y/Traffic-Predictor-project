@@ -424,25 +424,62 @@ st.markdown(f"""
         color: #f8fafc !important;
     }}
     
-    /* Custom Widget styling overrides */
+    /* Premium Styled Selectboxes (Dropdown Menus) */
     div[data-baseweb="select"] {{
         background-color: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 6px !important;
+        border: 2px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+        font-weight: 500 !important;
     }}
     div[data-baseweb="select"] * {{
         color: #1e293b !important;
     }}
     div[data-baseweb="select"]:hover {{
         border-color: #0b2545 !important;
+        box-shadow: 0 4px 12px rgba(11, 37, 69, 0.08) !important;
+    }}
+    div[data-baseweb="select"]:focus-within {{
+        border-color: #FF9933 !important;
+        box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.18) !important;
     }}
     
     [data-testid="stSidebar"] div[data-baseweb="select"] {{
-        background-color: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        background-color: rgba(255, 255, 255, 0.06) !important;
+        border: 2px solid rgba(255, 255, 255, 0.15) !important;
+        border-radius: 12px !important;
+        transition: all 0.3s ease !important;
     }}
     [data-testid="stSidebar"] div[data-baseweb="select"] * {{
         color: #ffffff !important;
+    }}
+    [data-testid="stSidebar"] div[data-baseweb="select"]:hover {{
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }}
+    [data-testid="stSidebar"] div[data-baseweb="select"]:focus-within {{
+        border-color: #FF9933 !important;
+        box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.25) !important;
+    }}
+    
+    /* Premium Dropdown Listbox Popover styling */
+    ul[role="listbox"] {{
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        padding: 6px !important;
+    }}
+    div[role="option"], li[role="option"] {{
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        transition: all 0.2s ease !important;
+        color: #1e293b !important;
+    }}
+    div[role="option"]:hover, li[role="option"]:hover {{
+        background-color: #f1f5f9 !important;
+        color: #0b2545 !important;
     }}
     
     /* Streamlit buttons custom styling */
@@ -471,14 +508,47 @@ st.markdown(f"""
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
     }}
     
+    /* Premium Styled Input Fields (Search, Text, Number, Textarea) */
+    div[data-baseweb="input"] {{
+        background-color: #ffffff !important;
+        border: 2px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    }}
+    div[data-baseweb="input"]:hover {{
+        border-color: #0b2545 !important;
+        box-shadow: 0 4px 12px rgba(11, 37, 69, 0.08) !important;
+    }}
+    div[data-baseweb="input"]:focus-within {{
+        border-color: #FF9933 !important;
+        box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.18) !important;
+    }}
+    div[data-baseweb="input"] input {{
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        color: #1e293b !important;
+        font-weight: 500 !important;
+    }}
+    
     input[type="text"], input[type="number"], textarea {{
         background-color: #ffffff !important;
-        border: 1px solid #cbd5e1 !important;
+        border: 2px solid #cbd5e1 !important;
         color: #1e293b !important;
-        border-radius: 6px !important;
+        border-radius: 12px !important;
+        padding: 0.6rem 0.9rem !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+        font-weight: 500 !important;
+    }}
+    input[type="text"]:hover, input[type="number"]:hover, textarea:hover {{
+        border-color: #0b2545 !important;
     }}
     input[type="text"]:focus, input[type="number"]:focus, textarea:focus {{
-        border-color: #0b2545 !important;
+        border-color: #FF9933 !important;
+        box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.18) !important;
+        background-color: #ffffff !important;
     }}
     
     /* Metric modifications */
@@ -625,6 +695,19 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────
+# INTERACTIVE LANGUAGE SWITCHER (TOP RIGHT OF HOMEPAGE)
+# ─────────────────────────────────────────────────────────
+top_lang_col1, top_lang_col2 = st.columns([10, 2])
+with top_lang_col2:
+    st.segmented_control(
+        label="Language Switcher",
+        options=["English", "ಕನ್ನಡ"],
+        key="lang",
+        label_visibility="collapsed",
+        selection_mode="single"
+    )
+
+# ─────────────────────────────────────────────────────────
 # 1. LOAD DATA & MODELS (CACHED)
 # ─────────────────────────────────────────────────────────
 @st.cache_data
@@ -697,13 +780,7 @@ with st.sidebar:
         </div>
         """, unsafe_allow_html=True)
 
-    # 🌐 Switch Language Widget (Defaults to English)
-    st.radio(
-        "🌐 " + t("switch_lang"),
-        ["English", "ಕನ್ನಡ"],
-        key="lang",
-        horizontal=True
-    )
+    # Relocated to top right of main page
         
     st.markdown("### 🏛️ " + t("nav_title"))
     
