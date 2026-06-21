@@ -254,8 +254,17 @@ st.markdown(f"""
     }}
 
     /* Accessibility Bar Overrides */
-    div[data-key="accessibility_bar_wrapper"] {{
+    div[data-key="accessibility_bar_wrapper"],
+    div[data-key="accessibility_bar_wrapper"] > div,
+    div[data-key="accessibility_bar_wrapper"] div[data-testid="stHorizontalBlock"],
+    div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] {{
         background-color: #0b2545 !important;
+        background: #0b2545 !important;
+        padding: 0px !important;
+        margin: 0px !important;
+    }}
+    
+    div[data-key="accessibility_bar_wrapper"] {{
         padding: 0px 2rem !important;
         border-radius: 6px !important;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
@@ -270,16 +279,12 @@ st.markdown(f"""
     div[data-key="accessibility_bar_wrapper"] div[data-testid="stHorizontalBlock"] {{
         align-items: center !important;
         width: 100% !important;
-        margin: 0px !important;
-        padding: 0px !important;
         gap: 0px !important;
     }}
     
     div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] {{
         display: flex !important;
         align-items: center !important;
-        padding: 0px !important;
-        margin: 0px !important;
         min-height: auto !important;
     }}
     
@@ -308,9 +313,12 @@ st.markdown(f"""
     }}
     
     /* Access Buttons styling override */
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_out"],
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_reset"],
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_in"] {{
+    div[data-key="accessibility_bar_wrapper"] div.stButton {{
+        margin: 0px 2px !important;
+        padding: 0px !important;
+    }}
+    
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button {{
         background: transparent !important;
         border: 1px solid rgba(255,255,255,0.25) !important;
         color: #e2e8f0 !important;
@@ -323,16 +331,13 @@ st.markdown(f"""
         line-height: 1 !important;
         box-shadow: none !important;
         transform: none !important;
-        margin: 0 2px !important;
         font-weight: bold !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_out"]:hover,
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_reset"]:hover,
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_in"]:hover {{
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button:hover {{
         border-color: #d97706 !important;
         color: #ffffff !important;
         background-color: rgba(255, 255, 255, 0.05) !important;
