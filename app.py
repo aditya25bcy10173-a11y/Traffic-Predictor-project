@@ -24,6 +24,8 @@ st.set_page_config(
 # ─────────────────────────────────────────────────────────
 if "lang" not in st.session_state:
     st.session_state.lang = "English"
+if "font_size" not in st.session_state:
+    st.session_state.font_size = 100
 
 translations = {
     "English": {
@@ -227,6 +229,9 @@ st.markdown(f"""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&family=Montserrat:wght=700;900&family=Noto+Sans+Kannada:wght@400;700&display=swap');
     
+    html {{
+        font-size: {st.session_state.font_size}% !important;
+    }}
     html, body, [class*="css"] {{
         font-family: 'Inter', 'Noto Sans Kannada', sans-serif;
         background-color: #f8fafc !important;
@@ -248,46 +253,68 @@ st.markdown(f"""
         max-width: 95% !important;
     }}
 
-    /* Accessibility Bar */
-    .access-bar {{
-        background-color: #0b2545;
-        padding: 6px 2rem;
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.72rem;
-        color: #e2e8f0;
-        margin-top: 0.2rem;
-        margin-bottom: 1.2rem;
-        border-radius: 6px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    /* Accessibility Bar Overrides */
+    div[data-key="accessibility_bar_wrapper"] {{
+        background-color: #0b2545 !important;
+        padding: 4px 1rem !important;
+        border-radius: 6px !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
+        margin-top: 0.2rem !important;
+        margin-bottom: 1.2rem !important;
     }}
-    .access-bar a {{
-        color: #d97706;
-        text-decoration: none;
-        margin-right: 15px;
-        font-weight: 500;
+    
+    div[data-key="accessibility_bar_wrapper"] div[data-testid="stHorizontalBlock"] {{
+        align-items: center !important;
     }}
-    .access-bar a:hover {{
-        text-decoration: underline;
-        color: #ffffff;
+    
+    div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] {{
+        display: flex !important;
+        align-items: center !important;
     }}
-    .access-right {{
-        display: flex;
-        gap: 15px;
-        align-items: center;
+    
+    div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] * {{
+        color: #e2e8f0 !important;
+        font-size: 0.75rem !important;
     }}
-    .access-btn {{
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.25);
-        color: #e2e8f0;
-        padding: 1px 6px;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 0.7rem;
+    
+    div[data-key="accessibility_bar_wrapper"] a {{
+        color: #d97706 !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+        margin-right: 15px !important;
     }}
-    .access-btn:hover {{
-        border-color: #d97706;
-        color: #fff;
+    
+    div[data-key="accessibility_bar_wrapper"] a:hover {{
+        text-decoration: underline !important;
+        color: #ffffff !important;
+    }}
+    
+    /* Access Buttons styling override */
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_out"],
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_reset"],
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_in"] {{
+        background: transparent !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        color: #e2e8f0 !important;
+        padding: 1px 6px !important;
+        border-radius: 3px !important;
+        cursor: pointer !important;
+        font-size: 0.7rem !important;
+        min-height: auto !important;
+        height: 22px !important;
+        line-height: 1 !important;
+        box-shadow: none !important;
+        transform: none !important;
+        margin: 0 2px !important;
+        font-weight: bold !important;
+    }}
+    
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_out"]:hover,
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_reset"]:hover,
+    div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_in"]:hover {{
+        border-color: #d97706 !important;
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.05) !important;
     }}
     
     /* CSS Drawn Mini Indian Flag */
@@ -674,25 +701,42 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────
-# Accessibility Top Bar Insertion with CSS-drawn Flag
+# Accessibility Top Bar Insertion with CSS-drawn Flag (Interactive Zoom)
 # ─────────────────────────────────────────────────────────
-st.markdown(f"""
-<div class="access-bar">
-    <div style="display: flex; align-items: center;">
-        <span class="indian-flag-icon"></span>
-        <a href="https://karnataka.gov.in" target="_blank">ಕರ್ನಾಟಕ ಸರ್ಕಾರ | karnataka.gov.in</a> | &nbsp;
-        <a href="https://india.gov.in" target="_blank">ಭಾರತ ಸರ್ಕಾರದ ಪೋರ್ಟಲ್ | india.gov.in</a>
-    </div>
-    <div class="access-right">
-        <span>Screen Reader Access</span> | 
-        <button class="access-btn">A-</button>
-        <button class="access-btn">A</button>
-        <button class="access-btn">A+</button> | 
-        <span style="color:{ '#ffb000' if st.session_state.lang == 'ಕನ್ನಡ' else '#cbd5e1' }; font-weight:bold;">ಕನ್ನಡ</span> / 
-        <span style="color:{ '#ffb000' if st.session_state.lang == 'English' else '#cbd5e1' }; font-weight:bold;">English</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+with st.container(key="accessibility_bar_wrapper"):
+    acc_col1, acc_col2 = st.columns([6, 4])
+    with acc_col1:
+        st.markdown(f"""
+        <div style="display: flex; align-items: center;">
+            <span class="indian-flag-icon"></span>
+            <a href="https://karnataka.gov.in" target="_blank">ಕರ್ನಾಟಕ ಸರ್ಕಾರ | karnataka.gov.in</a> &nbsp;|&nbsp;&nbsp;
+            <a href="https://india.gov.in" target="_blank">ಭಾರತ ಸರ್ಕಾರದ ಪೋರ್ಟಲ್ | india.gov.in</a>
+        </div>
+        """, unsafe_allow_html=True)
+    with acc_col2:
+        btn_col_text, btn_col_out, btn_col_reset, btn_col_in, btn_col_lang = st.columns([3.5, 0.8, 0.8, 0.8, 3.8])
+        with btn_col_text:
+            st.markdown('<div style="text-align: right; padding-top: 2px;">Screen Reader Access &nbsp;|&nbsp;</div>', unsafe_allow_html=True)
+        with btn_col_out:
+            if st.button("A-", key="zoom_out", help="Zoom Out / Decrease Font Size"):
+                st.session_state.font_size = max(80, st.session_state.font_size - 10)
+                st.rerun()
+        with btn_col_reset:
+            if st.button("A", key="zoom_reset", help="Reset Font Size"):
+                st.session_state.font_size = 100
+                st.rerun()
+        with btn_col_in:
+            if st.button("A+", key="zoom_in", help="Zoom In / Increase Font Size"):
+                st.session_state.font_size = min(130, st.session_state.font_size + 10)
+                st.rerun()
+        with btn_col_lang:
+            st.markdown(f"""
+            <div style="text-align: left; padding-top: 2px;">
+                &nbsp;|&nbsp;
+                <span style="color:{ '#ffb000' if st.session_state.lang == 'ಕನ್ನಡ' else '#cbd5e1' }; font-weight:bold;">ಕನ್ನಡ</span> / 
+                <span style="color:{ '#ffb000' if st.session_state.lang == 'English' else '#cbd5e1' }; font-weight:bold;">English</span>
+            </div>
+            """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────
 # INTERACTIVE LANGUAGE SWITCHER (TOP RIGHT OF HOMEPAGE)
