@@ -452,7 +452,7 @@ st.markdown(f"""
         transition: all 0.3s ease !important;
     }}
     [data-testid="stSidebar"] div[data-baseweb="select"] * {{
-        color: #ffffff !important;
+        color: #1e293b !important;
     }}
     [data-testid="stSidebar"] div[data-baseweb="select"]:hover {{
         border-color: rgba(255, 255, 255, 0.4) !important;
