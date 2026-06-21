@@ -13,7 +13,7 @@ from recommender import get_recommendations, log_recommendation, log_feedback, D
 
 # Page Configuration
 st.set_page_config(
-    page_title="Bengaluru Intelligent Mobility Command Center - Govt of Karnataka",
+    page_title="VahanFlow - Bengaluru Intelligent Command Center - Govt of Karnataka",
     page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -29,7 +29,7 @@ if "font_size" not in st.session_state:
 
 translations = {
     "English": {
-        "title": "BENGALURU INTELLIGENT MOBILITY COMMAND CENTER",
+        "title": "VAHANFLOW: BENGALURU INTELLIGENT MOBILITY COMMAND CENTER",
         "subtitle": "Under the Aegis of Directorate of Urban Land Transport (DULT) & Bengaluru Traffic Police (BTP)",
         "gov_karnataka": "GOVERNMENT OF KARNATAKA",
         "portal_badge": "OFFICIAL SECURE GOVERNMENT PORTAL",
@@ -117,7 +117,7 @@ translations = {
         "menu_control": "Control Center"
     },
     "ಕನ್ನಡ": {
-        "title": "ಬೆಂಗಳೂರು ಬುದ್ಧಿವಂತ ಚಲನಶೀಲತೆ ಕಮಾಂಡ್ ಸೆಂಟರ್",
+        "title": "ವಾಹನಫ್ಲೋ: ಬೆಂಗಳೂರು ಬುದ್ಧಿವಂತ ಚಲನಶೀಲತೆ ಕಮಾಂಡ್ ಸೆಂಟರ್",
         "subtitle": "ನಗರಾಭಿವೃದ್ಧಿ ಭೂ ಸಾರಿಗೆ ನಿರ್ದೇಶನಾಲಯ (DULT) ಮತ್ತು ಬೆಂಗಳೂರು ಸಂಚಾರಿ ಪೊಲೀಸ್ ಜಂಟಿ ಉಪಕ್ರಮ",
         "gov_karnataka": "ಕರ್ನಾಟಕ ಸರ್ಕಾರ",
         "portal_badge": "ಅಧಿಕೃತ ಸುರಕ್ಷಿತ ಸರ್ಕಾರಿ ಪೋರ್ಟಲ್",
