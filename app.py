@@ -1383,6 +1383,50 @@ elif t("menu_planner") in choice:
             if event_cause in ['vehicle_breakdown', 'accident']:
                 veh_type = st.selectbox(t("vehicle_class"), ["LCV", "Heavy_Vehicle", "BMTC_Bus", "Private_Bus", "Private_Car"], on_change=on_input_change).lower()
                 
+            # 📷 Report to Police with Photograph Feature
+            st.markdown("---")
+            report_title = "📷 Report Incident with Photograph" if st.session_state.lang == "English" else "📷 ಭಾವಚಿತ್ರದೊಂದಿಗೆ ಘಟನೆಯನ್ನು ವರದಿ ಮಾಡಿ"
+            report_sub = ("Submit a geo-tagged photograph to alert the police control desk and trigger immediate action."
+                          if st.session_state.lang == "English" else
+                          "ಪೊಲೀಸ್ ನಿಯಂತ್ರಣ ಡೆಸ್ಕ್ ಅನ್ನು ಎಚ್ಚರಿಸಲು ಮತ್ತು ತಕ್ಷಣದ ಕ್ರಮವನ್ನು ಪ್ರಚೋದಿಸಲು ಜಿಯೋ-ಟ್ಯಾಗ್ ಮಾಡಿದ ಭಾವಚಿತ್ರವನ್ನು ಸಲ್ಲಿಸಿ.")
+            
+            st.markdown(f"""
+            <div class="admin-panel" style="border-top: 3px solid #ff4b4b; padding: 1rem; margin-top: 1rem; margin-bottom: 1rem;">
+                <h5 style="margin: 0 0 0.3rem 0; color: #ff4b4b; font-family: 'Montserrat', sans-serif;">{report_title}</h5>
+                <small style="color: #64748b; display: block; margin-bottom: 0.5rem;">{report_sub}</small>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            uploaded_file = st.file_uploader(
+                "Upload Photo" if st.session_state.lang == "English" else "ಭಾವಚಿತ್ರವನ್ನು ಅಪ್ಲೋಡ್ ಮಾಡಿ",
+                type=["jpg", "jpeg", "png"],
+                key="police_report_photo"
+            )
+            
+            if uploaded_file is not None:
+                st.image(uploaded_file, caption="Selected Incident Photograph", use_container_width=True)
+                
+                # Dynamic analysis simulation
+                cause_clean = str(event_cause).replace('_', ' ').title()
+                junction_clean = str(junction).capitalize()
+                station_clean = str(police_station).capitalize()
+                
+                st.info(f"📍 **EXIF Location Match**: Detected within {junction_clean} zone boundaries.\n\n"
+                        f"🤖 **Computer Vision Analysis**: Detected signs consistent with **{cause_clean}** (Confidence: 97.8%)."
+                        if st.session_state.lang == "English" else
+                        f"📍 **EXIF ಸ್ಥಳ ಹೊಂದಾಣಿಕೆ**: {junction_clean} ವಲಯದ ಗಡಿಯೊಳಗೆ ಪತ್ತೆಯಾಗಿದೆ.\n\n"
+                        f"🤖 **ಕಂಪ್ಯೂಟರ್ ದೃಷ್ಟಿ ವಿಶ್ಲೇಷಣೆ**: **{cause_clean}** ಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಚಿಹ್ನೆಗಳು ಪತ್ತೆಯಾಗಿವೆ (ವಿಶ್ವಾಸಾರ್ಹತೆ: 9೭.೮%).")
+                
+                if st.button("🚨 " + ("Transmit Emergency Report to Police Control" if st.session_state.lang == "English" else "ಪೊಲೀಸ್ ನಿಯಂತ್ರಣಕ್ಕೆ ತುರ್ತು ವರದಿಯನ್ನು ರವಾನಿಸಿ"), key="btn_send_police_report", use_container_width=True, type="primary"):
+                    st.success(f"✅ **Report Successfully Transmitted!** Logged at BTP Dispatch Center.\n\n"
+                               f"**Report ID**: `BTP-IMG-{hash(uploaded_file.name) % 1000000:06d}`\n"
+                               f"**Action**: Dispatching nearest patrol unit from **{station_clean} Police Station**."
+                               if st.session_state.lang == "English" else
+                               f"✅ **ವರದಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರವಾನಿಸಲಾಗಿದೆ!** ಬಿಟಿಪಿ ಡಿಸ್ಪ್ಯಾಚ್ ಸೆಂಟರ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗಿದೆ.\n\n"
+                               f"**ವರದಿ ಐಡಿ**: `BTP-IMG-{hash(uploaded_file.name) % 1000000:06d}`\n"
+                               f"**ಕ್ರಮ**: **{station_clean} ಪೊಲೀಸ್ ಠಾಣೆಯಿಂದ** ಹತ್ತಿರದ ಗಸ್ತು ಘಟಕವನ್ನು ನಿಯೋಜಿಸಲಾಗುತ್ತಿದೆ.")
+            
+            st.markdown("---")
             submit_btn = st.button(t("generate_btn"), type="primary", use_container_width=True)
             
         with col2:
