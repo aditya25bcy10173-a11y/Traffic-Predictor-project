@@ -254,17 +254,17 @@ st.markdown(f"""
     }}
 
     /* Accessibility Bar Overrides */
-    div[data-key="accessibility_bar_wrapper"],
-    div[data-key="accessibility_bar_wrapper"] > div,
-    div[data-key="accessibility_bar_wrapper"] div[data-testid="stHorizontalBlock"],
-    div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] {{
+    .st-key-accessibility_bar_wrapper,
+    .st-key-accessibility_bar_wrapper > div,
+    .st-key-accessibility_bar_wrapper div[data-testid="stHorizontalBlock"],
+    .st-key-accessibility_bar_wrapper div[data-testid="column"] {{
         background-color: #0b2545 !important;
         background: #0b2545 !important;
         padding: 0px !important;
         margin: 0px !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] {{
+    .st-key-accessibility_bar_wrapper {{
         padding: 0px 2rem !important;
         border-radius: 6px !important;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
@@ -276,49 +276,49 @@ st.markdown(f"""
         justify-content: center !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] div[data-testid="stHorizontalBlock"] {{
+    .st-key-accessibility_bar_wrapper div[data-testid="stHorizontalBlock"] {{
         align-items: center !important;
         width: 100% !important;
         gap: 0px !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] {{
+    .st-key-accessibility_bar_wrapper div[data-testid="column"] {{
         display: flex !important;
         align-items: center !important;
         min-height: auto !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] * {{
+    .st-key-accessibility_bar_wrapper div[data-testid="column"] * {{
         color: #e2e8f0 !important;
         font-size: 0.72rem !important;
         margin-bottom: 0px !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] p {{
+    .st-key-accessibility_bar_wrapper p {{
         margin: 0px !important;
         padding: 0px !important;
         line-height: 1.2 !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] a {{
+    .st-key-accessibility_bar_wrapper a {{
         color: #d97706 !important;
         text-decoration: none !important;
         font-weight: 500 !important;
         margin-right: 15px !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] a:hover {{
+    .st-key-accessibility_bar_wrapper a:hover {{
         text-decoration: underline !important;
         color: #ffffff !important;
     }}
     
     /* Access Buttons styling override */
-    div[data-key="accessibility_bar_wrapper"] div.stButton {{
+    .st-key-accessibility_bar_wrapper div.stButton {{
         margin: 0px 2px !important;
         padding: 0px !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button {{
+    .st-key-accessibility_bar_wrapper div.stButton > button {{
         background: transparent !important;
         border: 1px solid rgba(255,255,255,0.25) !important;
         color: #e2e8f0 !important;
@@ -337,7 +337,7 @@ st.markdown(f"""
         justify-content: center !important;
     }}
     
-    div[data-key="accessibility_bar_wrapper"] div.stButton > button:hover {{
+    .st-key-accessibility_bar_wrapper div.stButton > button:hover {{
         border-color: #d97706 !important;
         color: #ffffff !important;
         background-color: rgba(255, 255, 255, 0.05) !important;
