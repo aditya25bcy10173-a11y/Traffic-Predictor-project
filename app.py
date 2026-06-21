@@ -256,25 +256,43 @@ st.markdown(f"""
     /* Accessibility Bar Overrides */
     div[data-key="accessibility_bar_wrapper"] {{
         background-color: #0b2545 !important;
-        padding: 4px 1rem !important;
+        padding: 0px 2rem !important;
         border-radius: 6px !important;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important;
         margin-top: 0.2rem !important;
         margin-bottom: 1.2rem !important;
+        min-height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }}
     
     div[data-key="accessibility_bar_wrapper"] div[data-testid="stHorizontalBlock"] {{
         align-items: center !important;
+        width: 100% !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        gap: 0px !important;
     }}
     
     div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] {{
         display: flex !important;
         align-items: center !important;
+        padding: 0px !important;
+        margin: 0px !important;
+        min-height: auto !important;
     }}
     
     div[data-key="accessibility_bar_wrapper"] div[data-testid="column"] * {{
         color: #e2e8f0 !important;
-        font-size: 0.75rem !important;
+        font-size: 0.72rem !important;
+        margin-bottom: 0px !important;
+    }}
+    
+    div[data-key="accessibility_bar_wrapper"] p {{
+        margin: 0px !important;
+        padding: 0px !important;
+        line-height: 1.2 !important;
     }}
     
     div[data-key="accessibility_bar_wrapper"] a {{
@@ -301,12 +319,15 @@ st.markdown(f"""
         cursor: pointer !important;
         font-size: 0.7rem !important;
         min-height: auto !important;
-        height: 22px !important;
+        height: 20px !important;
         line-height: 1 !important;
         box-shadow: none !important;
         transform: none !important;
         margin: 0 2px !important;
         font-weight: bold !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }}
     
     div[data-key="accessibility_bar_wrapper"] div.stButton > button[key="zoom_out"]:hover,
