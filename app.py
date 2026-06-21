@@ -13,7 +13,7 @@ from recommender import get_recommendations, log_recommendation, log_feedback, D
 
 # Page Configuration
 st.set_page_config(
-    page_title="VahanFlow - Bengaluru Intelligent Command Center - Govt of Karnataka",
+    page_title="vahanFlow - Bengaluru Intelligent Command Center - Govt of Karnataka",
     page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded"
