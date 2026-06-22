@@ -497,6 +497,12 @@ st.markdown(f"""
     div[data-baseweb="select"] * {{
         color: #1e293b !important;
     }}
+    div[data-baseweb="select"] [data-baseweb="tag"] * {{
+        color: #ffffff !important;
+    }}
+    div[data-baseweb="select"] [data-baseweb="tag"] {{
+        background-color: #0b2545 !important;
+    }}
     div[data-baseweb="select"]:hover {{
         border-color: #0b2545 !important;
         box-shadow: 0 4px 12px rgba(11, 37, 69, 0.08) !important;
@@ -513,7 +519,13 @@ st.markdown(f"""
         transition: all 0.3s ease !important;
     }}
     [data-testid="stSidebar"] div[data-baseweb="select"] * {{
-        color: #1e293b !important;
+        color: #f8fafc !important;
+    }}
+    [data-testid="stSidebar"] div[data-baseweb="select"] [data-baseweb="tag"] * {{
+        color: #ffffff !important;
+    }}
+    [data-testid="stSidebar"] div[data-baseweb="select"] [data-baseweb="tag"] {{
+        background-color: #FF9933 !important;
     }}
     [data-testid="stSidebar"] div[data-baseweb="select"]:hover {{
         border-color: rgba(255, 255, 255, 0.4) !important;
