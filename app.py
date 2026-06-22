@@ -2032,60 +2032,337 @@ elif t("menu_metro") in choice:
 elif t("menu_bmtc") in choice:
     st.subheader(f"🚌 {t('bmtc_title')}")
     
-    col_b1, col_b2 = st.columns([1.2, 1])
-    with col_b1:
+    # -------------------------------------------------------------
+    # BMTC ROUTE DATASET & OPERATIONAL DIRECTORY
+    # -------------------------------------------------------------
+    bmtc_routes_data = {
+        "500-D": {
+            "name": "Central Silk Board ⇄ Hebbal (via Outer Ring Road)",
+            "start": "Central Silk Board",
+            "end": "Hebbal Outer Ring Road",
+            "operating_hours": "05:00 AM - 10:45 PM",
+            "peak_freq": "5-8 minutes",
+            "offpeak_freq": "12-15 minutes",
+            "fare_range": "₹15 - ₹35 (Normal) | ₹30 - ₹75 (Vajra AC)",
+            "depot": "Depot 4 (HSR Layout) & Depot 7 (Hebbal)",
+            "stops": ["Central Silk Board", "HSR Layout (SIAS)", "Agara Junction", "Ibblur", "Bellandur", "Devarabeesanahalli", "Marathahalli Bridge", "Karthik Nagar", "KR Puram Railway Station", "Babusapalya", "Kalyan Nagar", "Nagawara", "Hebbal Junction"],
+            "kannada": {
+                "name": "ಸೆಂಟ್ರಲ್ ಸಿಲ್ಕ್ ಬೋರ್ಡ್ ⇄ ಹೆಬ್ಬಾಳ (ಹೊರ ವರ್ತುಲ ರಸ್ತೆ ಮೂಲಕ)",
+                "depot": "ಡೆಪೋ ೪ (ಎಚ್‌ಎಸ್‌ಆರ್ ಲೇಔಟ್) ಮತ್ತು ಡೆಪೋ ೭ (ಹೆಬ್ಬಾಳ)",
+                "operating_hours": "ಬೆಳಗ್ಗೆ ೦೫:೦೦ - ರಾತ್ರಿ ೧೦:೪೫",
+                "peak_freq": "೫-೮ ನಿಮಿಷಗಳು",
+                "offpeak_freq": "೧೨-೧೫ ನಿಮಿಷಗಳು",
+            }
+        },
+        "335-E": {
+            "name": "Kempegowda Bus Station (Majestic) ⇄ ITPL Kadugodi",
+            "start": "KBS Majestic",
+            "end": "ITPL Kadugodi",
+            "operating_hours": "05:30 AM - 11:00 PM",
+            "peak_freq": "8-10 minutes",
+            "offpeak_freq": "15-20 minutes",
+            "fare_range": "₹20 - ₹40 (Normal) | ₹40 - ₹85 (Vajra AC)",
+            "depot": "Depot 13 (Whitefield)",
+            "stops": ["KBS Majestic", "Corporation (Hudson Circle)", "Richmond Circle", "Domlur Bridge", "HAL Main Gate", "Marathahalli Bridge", "Kundalahalli Gate", "Graphite India", "Vydehi Hospital", "ITPL Main Gate", "Kadugodi Bus Stand"],
+            "kannada": {
+                "name": "ಕೆಂಪೇಗೌಡ ಬಸ್ ನಿಲ್ದಾಣ (ಮೆಜೆಸ್ಟಿಕ್) ⇄ ಐಟಿಪಿಎಲ್ ಕಾಡುಗೋಡಿ",
+                "depot": "ಡೆಪೋ ೧೩ (ವೈಟ್‌ಫೀಲ್ಡ್)",
+                "operating_hours": "ಬೆಳಗ್ಗೆ ೦೫:೩೦ - ರಾತ್ರಿ ೧೧:೦೦",
+                "peak_freq": "೮-೧೦ ನಿಮಿಷಗಳು",
+                "offpeak_freq": "೧೫-೨೦ ನಿಮಿಷಗಳು",
+            }
+        },
+        "KIAS-9": {
+            "name": "Kempegowda Bus Station (Majestic) ⇄ Kempegowda Intl Airport",
+            "start": "KBS Majestic",
+            "end": "Kempegowda International Airport (KIA)",
+            "operating_hours": "24/7 (Continuous Service)",
+            "peak_freq": "15-20 minutes",
+            "offpeak_freq": "30 minutes",
+            "fare_range": "₹230 - ₹260 (Vayu Vajra AC Sleeper)",
+            "depot": "Depot 25 (Airport Services)",
+            "stops": ["KBS Majestic", "Mekhri Circle", "Hebbal Flyover", "Kogilu Cross", "Yelahanka Bypass", "Chikkajala", "Trumpet Flyover", "KIA Departure Terminal"],
+            "kannada": {
+                "name": "ಕೆಂಪೇಗೌಡ ಬಸ್ ನಿಲ್ದಾಣ (ಮೆಜೆಸ್ಟಿಕ್) ⇄ ಕೆಂಪೇಗೌಡ ಅಂತರಾಷ್ಟ್ರೀಯ ವಿಮಾನ ನಿಲ್ದಾಣ",
+                "depot": "ಡೆಪೋ ೨೫ (ವಿಮಾನ ನಿಲ್ದಾಣ ಸೇವೆಗಳು)",
+                "operating_hours": "೨೪/೭ (ನಿರಂತರ ಸೇವೆ)",
+                "peak_freq": "೧೫-೨೦ ನಿಮಿಷಗಳು",
+                "offpeak_freq": "೩೦ ನಿಮಿಷಗಳು",
+            }
+        },
+        "356-C": {
+            "name": "Kempegowda Bus Station (Majestic) ⇄ Electronic City Wipro Gate",
+            "start": "KBS Majestic",
+            "end": "Electronic City Wipro Gate",
+            "operating_hours": "06:00 AM - 10:30 PM",
+            "peak_freq": "10-12 minutes",
+            "offpeak_freq": "18-25 minutes",
+            "fare_range": "₹18 - ₹38 (Normal) | ₹35 - ₹80 (Vajra AC)",
+            "depot": "Depot 38 (Electronic City)",
+            "stops": ["KBS Majestic", "Wilson Garden", "Dairy Circle", "Madiwala", "Central Silk Board", "Bommanahalli", "Garvebhavipalya", "Singasandra", "Hosa Road", "Konappana Agrahara", "Electronic City Wipro Gate"],
+            "kannada": {
+                "name": "ಕೆಂಪೇಗೌಡ ಬಸ್ ನಿಲ್ದಾಣ (ಮೆಜೆಸ್ಟಿಕ್) ⇄ ಎಲೆಕ್ಟ್ರಾನಿಕ್ ಸಿಟಿ ವಿಪ್ರೋ ಗೇಟ್",
+                "depot": "ಡೆಪೋ ೩೮ (ಎಲೆಕ್ಟ್ರಾನಿಕ್ ಸಿಟಿ)",
+                "operating_hours": "ಬೆಳಗ್ಗೆ ೦೬:೦೦ - ರಾತ್ರಿ ೧೦:೩೦",
+                "peak_freq": "೧೦-೧೨ ನಿಮಿಷಗಳು",
+                "offpeak_freq": "೧೮-೨೫ ನಿಮಿಷಗಳು",
+            }
+        },
+        "G-3": {
+            "name": "Mayo Hall (Brigade Road) ⇄ Sarjapur",
+            "start": "Mayo Hall",
+            "end": "Sarjapur Bus Stand",
+            "operating_hours": "06:15 AM - 10:00 PM",
+            "peak_freq": "15 minutes",
+            "offpeak_freq": "25-30 minutes",
+            "fare_range": "₹15 - ₹35 (Normal)",
+            "depot": "Depot 21 (Sarjapur)",
+            "stops": ["Mayo Hall", "Military Hockey Stadium", "Domlur Flyover", "Koramangala Krupanidhi College", "Agara Junction", "Bellandur Gate", "Kaikondrahalli", "Carmelaram Gate", "Dommasandra", "Sarjapur Bus Stand"],
+            "kannada": {
+                "name": "ಮೇಯೋ ಹಾಲ್ (ಬ್ರಿಗೇಡ್ ರಸ್ತೆ) ⇄ ಸರ್ಜಾಪುರ",
+                "depot": "ಡೆಪೋ ೨೧ (ಸರ್ಜಾಪುರ)",
+                "operating_hours": "ಬೆಳಗ್ಗೆ ೦೬:೧೫ - ರಾತ್ರಿ ೧೦:೦೦",
+                "peak_freq": "೧೫ ನಿಮಿಷಗಳು",
+                "offpeak_freq": "೨೫-೩೦ ನಿಮಿಷಗಳು",
+            }
+        }
+    }
+
+    # Fleet status header metric
+    st.markdown(f"""
+    <div style="background: #0b2545; color: white; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; border-left: 5px solid #FF9933; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div>
+                <h4 style="margin: 0; font-weight: bold; color: white; font-size: 1.1rem;">🚌 BMTC INTELLIGENT FLEET OPERATIONS</h4>
+                <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #cbd5e1;">Directorate of Urban Land Transport (DULT) & BMTC Depot Sync Hub</p>
+            </div>
+            <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
+                <div style="text-align: right;">
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: bold;">TOTAL ON-ROAD FLEET</div>
+                    <div style="font-size: 1.15rem; font-weight: bold; color: #38bdf8;">5,842 / 6,100 <span style="font-size:0.8rem; color:#4ade80;">(95.8%)</span></div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.75rem; color: #94a3b8; font-weight: bold;">ACTIVE SECTORS</div>
+                    <div style="font-size: 1.15rem; font-weight: bold; color: #f59e0b;">486 Routes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    bmtc_tabs = st.tabs([
+        "📋 Route Directory & Timetables" if st.session_state.lang == "English" else "📋 ಮಾರ್ಗ ಡೈರೆಕ್ಟರಿ ಮತ್ತು ವೇಳಾಪಟ್ಟಿಗಳು",
+        "⚡ Live Congestion Schedule Optimizer" if st.session_state.lang == "English" else "⚡ ವೇಳಾಪಟ್ಟಿ ವಿಳಂಬ ಆಪ್ಟಿಮೈಜರ್",
+        "🛣️ Dedicated Bus Lane Monitor" if st.session_state.lang == "English" else "🛣️ ಪ್ರತ್ಯೇಕ ಬಸ್ ಪಥದ ಮೇಲ್ವಿಚಾರಣೆ"
+    ])
+
+    # TAB 1: Route Directory & Timetables
+    with bmtc_tabs[0]:
         st.markdown(f"""
-<div class="admin-panel" style="border-left: 4px solid #3b82f6;">
-    <h5>🚌 BMTC Intelligent Corridor Analytics</h5>
-    <p style="font-size: 0.85rem; color:#475569;">Select a high-density transit corridor to analyze average bus speed and delays:</p>
-</div>
-""", unsafe_allow_html=True)
+        <div class="admin-panel" style="border-left: 4px solid #10b981; margin-bottom: 1.2rem;">
+            <h5>📋 BMTC Route Directory</h5>
+            <p style="font-size: 0.85rem; color:#475569;">Select a high-density daily transit route to view stop-by-stop schedule alignments:</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        corridor_opt = st.selectbox("Select Transit Corridor:", ["Outer Ring Road Corridor (Hebbal to Silk Board)", "Hosur Road Corridor (Silk Board to Electronic City)", "Tumkur Road Corridor (Yeshwanthpur to Peenya)"])
+        sel_route_id = st.selectbox(
+            "Select Bus Route:" if st.session_state.lang == "English" else "ಬಸ್ ಮಾರ್ಗ ಆಯ್ಕೆಮಾಡಿ:",
+            list(bmtc_routes_data.keys()),
+            key="bmtc_dir_route"
+        )
         
-        # Display delay metrics
-        avg_speed = 12 if "Ring Road" in corridor_opt else 16 if "Hosur" in corridor_opt else 18
-        avg_delay = 24.5 if "Ring Road" in corridor_opt else 18.2 if "Hosur" in corridor_opt else 14.1
+        route_info = bmtc_routes_data[sel_route_id]
         
-        bcol_m1, bcol_m2, bcol_m3 = st.columns(3)
-        bcol_m1.metric("Avg Bus Speed", f"{avg_speed} km/h", delta="-4 km/h vs normal")
-        bcol_m2.metric("Average Corridor Delay", f"{avg_delay} mins", delta="+8 mins vs normal")
-        bcol_m3.metric("On-Time Performance", "74%", delta="-8%")
+        col_rd1, col_rd2 = st.columns([1, 1.2])
         
-        st.markdown("---")
-        st.markdown("### 🛠️ BMTC Route Speed Optimizer")
-        st.write("Analyze and optimize specific bus routes experiencing high bottleneck congestion:")
-        
-        route_no = st.text_input("Enter Route Number (e.g. 500D, 335E, 356C, 360):", value="500D")
-        run_opt = st.button("Analyze Route Efficiency", type="primary")
-        
-    with col_b2:
-        if run_opt and route_no:
-            st.success(f"Route {route_no} Optimization report successfully compiled!")
-            
-            savings = 12 if "500" in route_no else 9 if "335" in route_no else 8
+        with col_rd1:
             st.markdown(f"""
-<div class="admin-panel" style="padding: 1.2rem; background: #f8fafc; border-top: 3px solid #3b82f6;">
-    <h5 style="color:#0b2545; font-weight:bold; margin-bottom:0.5rem;">📊 Route {route_no} Bottleneck Analysis</h5>
-    <div style="font-size: 0.82rem; color:#1e293b; line-height:1.5;">
-        📍 <strong>Primary Bottleneck:</strong> Silk Board Junction Flyover Approach<br/>
-        ⏳ <strong>Estimated Peak Delay:</strong> 28.5 Minutes<br/>
-        🚓 <strong>Patrol Priority:</strong> High (Category 1)
-    </div>
-    <hr style="margin: 0.8rem 0; border: 0; border-top: 1px solid #cbd5e1;"/>
-    <h6 style="color:#d97706; font-weight:bold; margin-bottom:0.4rem;">💡 Tactical Mitigation Recommendations:</h6>
-    <ul style="font-size: 0.8rem; margin: 0; padding-left: 1.2rem; color: #1e293b; line-height: 1.4;">
-        <li>Implement temporary bus lane merging at HSR layout entry.</li>
-        <li>Deploy 2 traffic officers and 3 marshals to prevent private vehicles from parking in bus stops.</li>
-        <li>Optimize signals at Central Silk Board to prioritize BMTC bus waves.</li>
-    </ul>
-    <div style="font-size:0.82rem; color:#10b981; font-weight:bold; margin-top:0.8rem;">
-        📈 Est. COMMUTER TRAVEL TIME SAVED: {savings} MINUTES
-    </div>
-</div>
-""", unsafe_allow_html=True)
-        else:
-            st.info("Input a route number and select **Analyze Route Efficiency** to view bottleneck diagnostics.")
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem; height: 100%;">
+                <h5 style="color:#0f172a; margin-top: 0; font-weight: bold; font-size:1rem;">🚌 Route Details: {sel_route_id}</h5>
+                <hr style="margin: 0.6rem 0; border: 0; border-top: 1px solid #cbd5e1;"/>
+                <div style="font-size: 0.85rem; line-height: 1.6; color: #334155;">
+                    📍 <strong>Sector:</strong> {route_info['name'] if st.session_state.lang == 'English' else route_info['kannada']['name']}<br/>
+                    🏢 <strong>Managing Depot:</strong> {route_info['depot'] if st.session_state.lang == 'English' else route_info['kannada']['depot']}<br/>
+                    ⏰ <strong>Operating Hours:</strong> {route_info['operating_hours'] if st.session_state.lang == 'English' else route_info['kannada']['operating_hours']}<br/>
+                    ⚡ <strong>Peak Frequency:</strong> {route_info['peak_freq'] if st.session_state.lang == 'English' else route_info['kannada']['peak_freq']}<br/>
+                    🐢 <strong>Off-Peak Frequency:</strong> {route_info['offpeak_freq'] if st.session_state.lang == 'English' else route_info['kannada']['offpeak_freq']}<br/>
+                    💳 <strong>Fare Range:</strong> {route_info['fare_range']}<br/>
+                    🏁 <strong>Total Stops:</strong> {len(route_info['stops'])} stops
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col_rd2:
+            st.markdown(f"""
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem;">
+                <h5 style="color:#0f172a; margin-top: 0; font-weight: bold; font-size:1rem;">📍 Route Stops Timeline</h5>
+                <hr style="margin: 0.6rem 0; border: 0; border-top: 1px solid #cbd5e1;"/>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            stops_html = ""
+            for idx_s, stop in enumerate(route_info['stops']):
+                is_terminal = (idx_s == 0 or idx_s == len(route_info['stops']) - 1)
+                color = "#3b82f6" if idx_s == 0 else "#10b981" if idx_s == len(route_info['stops']) - 1 else "#64748b"
+                font_weight = "bold" if is_terminal else "normal"
+                marker = "🏁" if idx_s == len(route_info['stops']) - 1 else "🛫" if idx_s == 0 else "•"
+                
+                stops_html += f"""
+                <div style="display: flex; align-items: center; margin-bottom: 0.3rem; padding-left: 0.5rem;">
+                    <span style="color: {color}; font-size: 1rem; font-weight: bold; width: 1.5rem; display: inline-block; text-align: center;">{marker}</span>
+                    <span style="font-weight: {font_weight}; color: #1e293b; font-size: 0.85rem;">{stop}</span>
+                </div>
+                """
+                if idx_s < len(route_info['stops']) - 1:
+                    stops_html += f'<div style="padding-left: 1.15rem; color: #cbd5e1; font-size: 0.75rem; margin-top: -0.2rem; margin-bottom: -0.1rem;">│</div>'
+                    
+            st.markdown(f"""
+            <div style="max-height: 250px; overflow-y: auto; padding-right: 0.5rem;">
+                {stops_html}
+            </div>
+            """, unsafe_allow_html=True)
+
+    # TAB 2: Live Congestion Schedule Optimizer
+    with bmtc_tabs[1]:
+        st.markdown(f"""
+        <div class="admin-panel" style="border-left: 4px solid #f59e0b; margin-bottom: 1.2rem;">
+            <h5>⚡ Live Congestion Schedule Optimizer</h5>
+            <p style="font-size: 0.85rem; color:#475569;">Identify scheduling bottlenecks and trigger reserve dispatches to mitigate delays:</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col_op1, col_op2 = st.columns([1, 1.2])
+        
+        with col_op1:
+            opt_route_id = st.selectbox(
+                "Select Route to Optimize:" if st.session_state.lang == "English" else "ಆಪ್ಟಿಮೈಸ್ ಮಾಡಲು ಮಾರ್ಗವನ್ನು ಆರಿಸಿ:",
+                list(bmtc_routes_data.keys()),
+                key="bmtc_opt_route"
+            )
+            
+            time_slot = st.selectbox(
+                "Select Current Time Window:" if st.session_state.lang == "English" else "ಪ್ರಸ್ತುತ ಸಮಯದ ವಿಂಡೋ ಆರಿಸಿ:",
+                ["08:00 AM - 10:00 AM (Morning Peak)", "12:00 PM - 02:00 PM (Off-Peak)", "05:00 PM - 08:00 PM (Evening Peak)", "10:00 PM - 12:00 AM (Late Night)"]
+            )
+            
+            is_peak = "Peak" in time_slot
+            
+            # Predict delays based on peak hours and active database logs
+            base_delay = 18 if is_peak else 4
+            if opt_route_id == "500-D":
+                base_delay += 10
+            elif opt_route_id == "356-C" or opt_route_id == "335-E":
+                base_delay += 6
+                
+            st.metric(
+                label="Predicted Operational Delay" if st.session_state.lang == "English" else "ಊಹಿಸಲಾದ ಕಾರ್ಯಾಚರಣೆಯ ವಿಳಂಬ",
+                value=f"{base_delay} mins",
+                delta="+12 mins vs baseline" if is_peak else "+2 mins vs baseline",
+                delta_color="inverse"
+            )
+            
+            st.markdown("##### 💡 Dispatch Actions:")
+            
+            # Action 1: Inject standby bus
+            btn_inject = st.button("Inject Gap-Fill Feeder Bus" if st.session_state.lang == "English" else "ಮೀಸಲು ಫೀಡರ್ ಬಸ್ ಸೇರಿಸಿ", type="primary")
+            
+            # Action 2: Signal priority wave
+            btn_signal = st.button("Request Signal Priority Wave" if st.session_state.lang == "English" else "ಸಿಗ್ನಲ್ ಆದ್ಯತೆ ವೇವ್ ವಿನಂತಿಸಿ")
+            
+        with col_op2:
+            st.write("📋 **Depot Dispatch & Signal Logs**" if st.session_state.lang == "English" else "📋 **ಡೆಪೋ ರವಾನೆ ಮತ್ತು ಸಿಗ್ನಲ್ ಲಾಗ್‌ಗಳು**")
+            
+            # Handle Actions in Session State
+            if "bmtc_logs" not in st.session_state:
+                st.session_state.bmtc_logs = [
+                    "[08:15:02] BMTC Control: System monitoring active.",
+                    "[08:30:10] DULT Center: Connected to Namma Metro passenger outflow feeds."
+                ]
+                
+            if btn_inject:
+                import random
+                bus_id = f"KA-57-F-{random.randint(1000, 9999)}"
+                depot = bmtc_routes_data[opt_route_id]["depot"].split(" & ")[0]
+                now_str = datetime.datetime.now().strftime("%H:%M:%S")
+                st.session_state.bmtc_logs.append(f"[{now_str}] DISPATCH: Standby bus {bus_id} injected from {depot} to Route {opt_route_id}.")
+                st.session_state.bmtc_logs.append(f"[{now_str}] SYSTEM: Headway gap reduced by 8 mins. Status optimized.")
+                st.toast(f"Feeder Bus {bus_id} Dispatched!" if st.session_state.lang == "English" else f"ಫೀಡರ್ ಬಸ್ {bus_id} ರವಾನಿಸಲಾಗಿದೆ!")
+                
+            if btn_signal:
+                now_str = datetime.datetime.now().strftime("%H:%M:%S")
+                junction = "Central Silk Board" if opt_route_id in ["500-D", "356-C"] else "Marathahalli Bridge" if opt_route_id == "335-E" else "Hebbal Flyover"
+                st.session_state.bmtc_logs.append(f"[{now_str}] SIGNAL: Priority wave requested at {junction} for Route {opt_route_id}.")
+                st.session_state.bmtc_logs.append(f"[{now_str}] BTP Sync: Signal green-time extended by 15 seconds.")
+                st.toast("Signal Priority Dispatched!" if st.session_state.lang == "English" else "ಸಿಗ್ನಲ್ ಆದ್ಯತೆಯನ್ನು ರವಾನಿಸಲಾಗಿದೆ!")
+                
+            # Print logs in reverse chronological order
+            log_box_content = ""
+            for log in reversed(st.session_state.bmtc_logs):
+                log_box_content += log + "\n"
+            st.text_area("Live Terminal", value=log_box_content, height=220, disabled=True, label_visibility="collapsed")
+
+    # TAB 3: Dedicated Bus Lane (DBL) Monitor
+    with bmtc_tabs[2]:
+        st.markdown(f"""
+        <div class="admin-panel" style="border-left: 4px solid #ef4444; margin-bottom: 1.2rem;">
+            <h5>🛣️ Dedicated Bus Lane Compliance Monitor</h5>
+            <p style="font-size: 0.85rem; color:#475569;">Outer Ring Road (ORR) Dedicated Bus Lane - Silk Board to KR Puram Sector:</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col_dbl1, col_dbl2 = st.columns([1, 1.2])
+        
+        with col_dbl1:
+            st.markdown(f"""
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem;">
+                <h5 style="color:#0f172a; margin-top: 0; font-weight: bold; font-size:1rem;">🛣️ Compliance Stats</h5>
+                <hr style="margin: 0.6rem 0; border: 0; border-top: 1px solid #cbd5e1;"/>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Display DBL compliance stats
+            dc1, dc2 = st.columns(2)
+            dc1.metric("Compliance Rate", "89.4%", delta="+2.1% vs last week")
+            dc2.metric("Bus Speed Speedup", "+38%", delta="+4% vs mixed lane")
+            
+            st.write("")
+            btn_marshal = st.button("Dispatch Enforcement Marshals" if st.session_state.lang == "English" else "ಜಾರಿ ಮಾರ್ಷಲ್‌ಗಳನ್ನು ರವಾನಿಸಿ", type="primary")
+            
+        with col_dbl2:
+            st.markdown(f"""
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem; margin-bottom: 0.5rem;">
+                <h5 style="color:#0f172a; margin-top: 0; font-weight: bold; font-size:1rem;">🚨 DBL Camera Intrusion Alerts (Live Feed)</h5>
+                <hr style="margin: 0.6rem 0; border: 0; border-top: 1px solid #cbd5e1;"/>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if "dbl_violations" not in st.session_state:
+                st.session_state.dbl_violations = [
+                    {"vehicle": "KA-03-MP-4122", "type": "SUV", "location": "Ibblur Junction", "status": "🚨 Flagged"},
+                    {"vehicle": "KA-51-EF-8890", "type": "Sedan", "location": "Bellandur Gate", "status": "🚨 Flagged"},
+                    {"vehicle": "KA-01-AB-1234", "type": "Two-Wheeler", "location": "Marathahalli", "status": "🚨 Flagged"}
+                ]
+                
+            if btn_marshal:
+                st.session_state.dbl_violations = [
+                    {"vehicle": v["vehicle"], "type": v["type"], "location": v["location"], "status": "👮 Deployed Marshal"} 
+                    for v in st.session_state.dbl_violations
+                ]
+                st.toast("Traffic Marshals dispatched to DBL sectors!" if st.session_state.lang == "English" else "ಡಿಬಿಎಲ್ ಸೆಕ್ಟರ್‌ಗಳಿಗೆ ಸಂಚಾರ ಮಾರ್ಷಲ್‌ಗಳನ್ನು ರವಾನಿಸಲಾಗಿದೆ!")
+                
+            # Display violation alerts as beautiful cards
+            for v in st.session_state.dbl_violations:
+                badge_color = "#ef4444" if "🚨" in v["status"] else "#10b981"
+                st.markdown(f"""
+                <div style="padding: 0.6rem; background: white; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-family: monospace; font-weight: bold; color: #1e293b; font-size:0.85rem;">{v['vehicle']}</span> 
+                        <span style="font-size: 0.75rem; color: #64748b; margin-left: 0.5rem;">({v['type']})</span><br/>
+                        <span style="font-size: 0.78rem; color: #475569;">📍 {v['location']}</span>
+                    </div>
+                    <span style="background: {badge_color}15; color: {badge_color}; border: 1px solid {badge_color}; font-size: 0.7rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 12px;">{v['status']}</span>
+                </div>
+                """, unsafe_allow_html=True)
 
 elif t("menu_adhira") in choice:
     st.subheader(f"🤖 {t('adhira_title')}")
