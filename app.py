@@ -2207,20 +2207,14 @@ elif t("menu_bmtc") in choice:
                 font_weight = "bold" if is_terminal else "normal"
                 marker = "🏁" if idx_s == len(route_info['stops']) - 1 else "🛫" if idx_s == 0 else "•"
                 
-                stops_html += f"""
-                <div style="display: flex; align-items: center; margin-bottom: 0.3rem; padding-left: 0.5rem;">
-                    <span style="color: {color}; font-size: 1rem; font-weight: bold; width: 1.5rem; display: inline-block; text-align: center;">{marker}</span>
-                    <span style="font-weight: {font_weight}; color: #1e293b; font-size: 0.85rem;">{stop}</span>
-                </div>
-                """
+                stops_html += f'<div style="display: flex; align-items: center; margin-bottom: 0.3rem; padding-left: 0.5rem;">'
+                stops_html += f'<span style="color: {color}; font-size: 1rem; font-weight: bold; width: 1.5rem; display: inline-block; text-align: center;">{marker}</span>'
+                stops_html += f'<span style="font-weight: {font_weight}; color: #1e293b; font-size: 0.85rem;">{stop}</span>'
+                stops_html += f'</div>'
                 if idx_s < len(route_info['stops']) - 1:
                     stops_html += f'<div style="padding-left: 1.15rem; color: #cbd5e1; font-size: 0.75rem; margin-top: -0.2rem; margin-bottom: -0.1rem;">│</div>'
                     
-            st.markdown(f"""
-            <div style="max-height: 250px; overflow-y: auto; padding-right: 0.5rem;">
-                {stops_html}
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f'<div style="max-height: 250px; overflow-y: auto; padding-right: 0.5rem;">{stops_html}</div>', unsafe_allow_html=True)
 
     # TAB 2: Live Congestion Schedule Optimizer
     with bmtc_tabs[1]:
