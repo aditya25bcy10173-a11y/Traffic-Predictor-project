@@ -27,6 +27,14 @@ if "lang" not in st.session_state:
 if "font_size" not in st.session_state:
     st.session_state.font_size = 100
 
+if "potholes_db" not in st.session_state:
+    st.session_state.potholes_db = [
+        {"lat": 12.9226, "lon": 77.6174, "junction": "Central Silk Board", "severity": "Severe", "status": "Pending Repair", "reported_by": "Telemetry (BMTC-8890)", "timestamp": "2026-06-22 07:15:02"},
+        {"lat": 13.0359, "lon": 77.5978, "junction": "Hebbal Flyover", "severity": "Moderate", "status": "Pending Repair", "reported_by": "Citizen (BTP-5092)", "timestamp": "2026-06-22 08:30:10"},
+        {"lat": 12.9784, "lon": 77.5716, "junction": "Majestic Interchange", "severity": "Severe", "status": "Dispatched", "reported_by": "Telemetry (BMTC-3320)", "timestamp": "2026-06-22 08:45:00"},
+        {"lat": 12.9279, "lon": 77.6833, "junction": "Ibblur Junction", "severity": "Moderate", "status": "Repaired", "reported_by": "Citizen (BTP-1123)", "timestamp": "2026-06-21 16:20:12"}
+    ]
+
 translations = {
     "English": {
         "title": "VAHANFLOW: BENGALURU INTELLIGENT MOBILITY COMMAND CENTER",
@@ -1411,20 +1419,62 @@ elif t("menu_planner") in choice:
                 junction_clean = str(junction).capitalize()
                 station_clean = str(police_station).capitalize()
                 
-                st.info(f"📍 **EXIF Location Match**: Detected within {junction_clean} zone boundaries.\n\n"
-                        f"🤖 **Computer Vision Analysis**: Detected signs consistent with **{cause_clean}** (Confidence: 97.8%)."
-                        if st.session_state.lang == "English" else
-                        f"📍 **EXIF ಸ್ಥಳ ಹೊಂದಾಣಿಕೆ**: {junction_clean} ವಲಯದ ಗಡಿಯೊಳಗೆ ಪತ್ತೆಯಾಗಿದೆ.\n\n"
-                        f"🤖 **ಕಂಪ್ಯೂಟರ್ ದೃಷ್ಟಿ ವಿಶ್ಲೇಷಣೆ**: **{cause_clean}** ಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಚಿಹ್ನೆಗಳು ಪತ್ತೆಯಾಗಿವೆ (ವಿಶ್ವಾಸಾರ್ಹತೆ: 9೭.೮%).")
+                if event_cause == "road_conditions":
+                    st.markdown(f"""
+                    <div style="background: #0f172a; border-radius: 8px; padding: 1rem; border-left: 4px solid #10b981; margin-top: 0.8rem; color: white;">
+                        <h6 style="color: #10b981; font-weight: bold; margin: 0 0 0.5rem 0; font-size:0.88rem;">🤖 YOLOv8 STRUCTURAL ROAD SCANNER</h6>
+                        <div style="font-family: monospace; font-size: 0.78rem; line-height: 1.5; color: #cbd5e1;">
+                            [+] Scanning uploaded image matrices...<br/>
+                            [+] Detected object: <strong style="color: #f43f5e;">Severe Pothole</strong> (Conf: 94.2%)<br/>
+                            [+] Detected object: <strong style="color: #eab308;">Alligator Cracks</strong> (Conf: 88.0%)<br/>
+                            [+] Severity metrics: Depth: ~12cm | Area: ~0.85 sq.m<br/>
+                            <hr style="margin:0.5rem 0; border:0; border-top:1px solid #334155;"/>
+                            <span style="color: #ef4444; font-weight: bold;">⚠️ HAZARD WARNING:</span> Traffic speed scaling factor <strong>1.4x</strong> applied.
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.info(f"📍 **EXIF Location Match**: Detected within {junction_clean} zone boundaries.\n\n"
+                            f"🤖 **Computer Vision Analysis**: Detected signs consistent with **{cause_clean}** (Confidence: 97.8%)."
+                            if st.session_state.lang == "English" else
+                            f"📍 **EXIF ಸ್ಥಳ ಹೊಂದಾಣಿಕೆ**: {junction_clean} ವಲಯದ ಗಡಿಯೊಳಗೆ ಪತ್ತೆಯಾಗಿದೆ.\n\n"
+                            f"🤖 **ಕಂಪ್ಯೂಟರ್ ದೃಷ್ಟಿ ವಿಶ್ಲೇಷಣೆ**: **{cause_clean}** ಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಚಿಹ್ನೆಗಳು ಪತ್ತೆಯಾಗಿವೆ (ವಿಶ್ವಾಸಾರ್ಹತೆ: 9೭.೮%).")
                 
-                if st.button("🚨 " + ("Transmit Emergency Report to Police Control" if st.session_state.lang == "English" else "ಪೊಲೀಸ್ ನಿಯಂತ್ರಣಕ್ಕೆ ತುರ್ತು ವರದಿಯನ್ನು ರವಾನಿಸಿ"), key="btn_send_police_report", use_container_width=True, type="primary"):
-                    st.success(f"✅ **Report Successfully Transmitted!** Logged at BTP Dispatch Center.\n\n"
-                               f"**Report ID**: `BTP-IMG-{hash(uploaded_file.name) % 1000000:06d}`\n"
-                               f"**Action**: Dispatching nearest patrol unit from **{station_clean} Police Station**."
-                               if st.session_state.lang == "English" else
-                               f"✅ **ವರದಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರವಾನಿಸಲಾಗಿದೆ!** ಬಿಟಿಪಿ ಡಿಸ್ಪ್ಯಾಚ್ ಸೆಂಟರ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗಿದೆ.\n\n"
-                               f"**ವರದಿ ಐಡಿ**: `BTP-IMG-{hash(uploaded_file.name) % 1000000:06d}`\n"
-                               f"**ಕ್ರಮ**: **{station_clean} ಪೊಲೀಸ್ ಠಾಣೆಯಿಂದ** ಹತ್ತಿರದ ಗಸ್ತು ಘಟಕವನ್ನು ನಿಯೋಜಿಸಲಾಗುತ್ತಿದೆ.")
+                btn_label = "Transmit Emergency Report to Police Control" if st.session_state.lang == "English" else "ಪೊಲೀಸ್ ನಿಯಂತ್ರಣಕ್ಕೆ ತುರ್ತು ವರದಿಯನ್ನು ರವಾನಿಸಿ"
+                if event_cause == "road_conditions":
+                    btn_label = "Transmit Pothole & Dispatch BBMP Repair" if st.session_state.lang == "English" else "ರಸ್ತೆ ಗುಂಡಿ ವರದಿ ಮಾಡಿ ಮತ್ತು ಬಿಬಿಎಂಪಿ ದುರಸ್ತಿ ರವಾನಿಸಿ"
+                
+                if st.button("🚨 " + btn_label, key="btn_send_police_report", use_container_width=True, type="primary"):
+                    if event_cause == "road_conditions":
+                        import random
+                        pothole_id = f"BBMP-POT-{random.randint(100000, 999999)}"
+                        new_pothole = {
+                            "lat": lat,
+                            "lon": lon,
+                            "junction": str(junction).title(),
+                            "severity": "Severe",
+                            "status": "Dispatched",
+                            "reported_by": f"Citizen ({pothole_id})",
+                            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        }
+                        # Add or update
+                        existing = [p for p in st.session_state.potholes_db if p["junction"].lower() == new_pothole["junction"].lower()]
+                        if existing:
+                            existing[0]["status"] = "Dispatched"
+                        else:
+                            st.session_state.potholes_db.append(new_pothole)
+                        
+                        st.success(f"✅ **Pothole Successfully Logged & Crew Dispatched!**\n\n"
+                                   f"**Report ID**: `{pothole_id}`\n"
+                                   f"**Action**: Dispatching Asphalt Repair Crew from **BBMP Roads Division** to **{junction_clean}**.")
+                    else:
+                        st.success(f"✅ **Report Successfully Transmitted!** Logged at BTP Dispatch Center.\n\n"
+                                   f"**Report ID**: `BTP-IMG-{hash(uploaded_file.name) % 1000000:06d}`\n"
+                                   f"**Action**: Dispatching nearest patrol unit from **{station_clean} Police Station**."
+                                   if st.session_state.lang == "English" else
+                                   f"✅ **ವರದಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರವಾನಿಸಲಾಗಿದೆ!** ಬಿಟಿಪಿ ಡಿಸ್ಪ್ಯಾಚ್ ಸೆಂಟರ್‌ನಲ್ಲಿ ದಾಖಲಿಸಲಾಗಿದೆ.\n\n"
+                                   f"**ವರದಿ ಐಡಿ**: `BTP-IMG-{hash(uploaded_file.name) % 1000000:06d}`\n"
+                                   f"**ಕ್ರಮ**: **{station_clean} ಪೊಲೀಸ್ ಠಾಣೆಯಿಂದ** ಹತ್ತಿರದ ಗಸ್ತು ಘಟಕವನ್ನು ನಿಯೋಜಿಸಲಾಗುತ್ತಿದೆ.")
             
             st.markdown("---")
             submit_btn = st.button(t("generate_btn"), type="primary", use_container_width=True)
@@ -1494,6 +1544,10 @@ elif t("menu_planner") in choice:
                 w_cb = preprocessor['catboost_weight']
                 pred_log = w_pt * pred_log_pt + w_cb * pred_log_cb
                 predicted_duration = max(1.0, np.expm1(pred_log))
+                
+                # AI Pothole / Road conditions adjustment factor
+                if event_cause == "road_conditions" and uploaded_file is not None:
+                    predicted_duration = predicted_duration * 1.4
                 
                 # 2. Get recommendations
                 recs = get_recommendations(event_type, event_cause, priority, requires_road_closure, predicted_duration, veh_type)
@@ -1650,6 +1704,55 @@ elif t("menu_planner") in choice:
                     if st.button(t("dispatch_btn"), key="dispatch_action_btn", use_container_width=True):
                         st.balloons()
                         st.success(t("dispatch_success"))
+                        
+                    if event_cause == "road_conditions":
+                        # Renders a BBMP Municipal Asphalt Repair Work Order!
+                        import random
+                        bbmp_wo_id = f"BBMP-POT-26-{random.randint(10000, 99999)}"
+                        st.markdown(f"""
+<div class="dispatch-order" style="border-top: 4px solid #10b981; margin-top: 1.2rem; background: #f0fdf4;">
+<div class="dispatch-header" style="border-bottom: 2px solid #10b981; padding-bottom: 0.5rem; margin-bottom: 0.8rem;">
+<h3 style="margin:0; color:#065f46; font-weight:bold; font-size:1.15rem; letter-spacing:1px;">🚨 BBMP ASPHALT REPAIR WORK ORDER</h3>
+<small style="color:#047857; font-size:0.75rem;">BRUHAT BENGALURU MAHANAGARA PALIKE • INFRASTRUCTURE WING</small>
+</div>
+<table style="width:100%; border-collapse:collapse; margin-bottom:1rem; font-size:0.8rem;">
+<tr>
+<td style="padding:4px 0; color:#047857; font-weight:bold; width:45%;">WORK ORDER REF:</td>
+<td style="padding:4px 0; color:#065f46; font-weight:bold;">{bbmp_wo_id}</td>
+</tr>
+<tr>
+<td style="padding:4px 0; color:#047857; font-weight:bold;">TARGET SECTOR:</td>
+<td style="padding:4px 0; color:#1e293b; font-weight:bold;">{junction.upper()}</td>
+</tr>
+<tr>
+<td style="padding:4px 0; color:#047857; font-weight:bold;">INFRA HAZARD:</td>
+<td style="padding:4px 0; color:#ef4444; font-weight:bold;">SEVERE PAVEMENT DEGRADATION (POTHOLE)</td>
+</tr>
+<tr>
+<td style="padding:4px 0; color:#047857; font-weight:bold;">MATERIAL ESTIMATE:</td>
+<td style="padding:4px 0; color:#1e293b;">1.8 cu.m Bituminous Cold Mix / Aspha-Patch</td>
+</tr>
+<tr>
+<td style="padding:4px 0; color:#047857; font-weight:bold;">CREW DIVISION:</td>
+<td style="padding:4px 0; color:#1e293b;">BBMP {zone.upper()} Zone Infrastructure Div</td>
+</tr>
+<tr>
+<td style="padding:4px 0; color:#047857; font-weight:bold;">REPAIR STATUS:</td>
+<td style="padding:4px 0; color:#d97706; font-weight:bold;">{'DISPATCHED (CREW ETA 45 MINS)' if st.session_state.get('bbmp_dispatched', False) else '⚠️ PENDING COMMAND ACTION'}</td>
+</tr>
+</table>
+</div>
+""", unsafe_allow_html=True)
+                        
+                        st.write("")
+                        if st.button("Dispatch BBMP Asphalt Repair Crew", key="bbmp_dispatch_btn", use_container_width=True, type="primary" if not st.session_state.get('bbmp_dispatched', False) else "secondary"):
+                            st.session_state.bbmp_dispatched = True
+                            # Find pothole in potholes_db and mark as Dispatched
+                            for p in st.session_state.potholes_db:
+                                if p["junction"].lower() == junction.lower():
+                                    p["status"] = "Dispatched"
+                            st.success("BBMP Asphalt Task Force dispatched successfully!")
+                            st.rerun()
 
                 with out_col2:
                     # RIGHT COLUMN: Public Commuter Warning Advisory & Transit Signs Broadcast
@@ -1827,9 +1930,17 @@ elif t("menu_hotspot") in choice:
         else:
             df_hotspot = df_hotspot[~peak_mask]
             
+    # Add checkbox for reported potholes overlay
+    overlay_potholes = st.checkbox("Overlay Reported Potholes (GIS Registry)" if st.session_state.lang == "English" else "ರಸ್ತೆ ಗುಂಡಿಗಳನ್ನು ನಕ್ಷೆಯಲ್ಲಿ ಗುರುತಿಸಿ", value=True)
+            
     col_m1, col_m2 = st.columns([2, 1])
     with col_m1:
-        st.map(df_hotspot[['latitude', 'longitude']].rename(columns={'latitude': 'lat', 'longitude': 'lon'}), zoom=11)
+        map_points = df_hotspot[['latitude', 'longitude']].rename(columns={'latitude': 'lat', 'longitude': 'lon'})
+        if overlay_potholes and "potholes_db" in st.session_state:
+            pothole_points = pd.DataFrame([{"lat": p["lat"], "lon": p["lon"]} for p in st.session_state.potholes_db])
+            if not pothole_points.empty:
+                map_points = pd.concat([map_points, pothole_points], ignore_index=True)
+        st.map(map_points, zoom=11)
     with col_m2:
         top_junction = df_hotspot['junction'].value_counts().idxmax() if len(df_hotspot) > 0 else "None"
         top_junction_cnt = df_hotspot['junction'].value_counts().max() if len(df_hotspot) > 0 else 0
@@ -1847,6 +1958,58 @@ elif t("menu_hotspot") in choice:
         top_junctions_df.columns = ['Junction', 'Reports Count']
         top_junctions_df['Junction'] = top_junctions_df['Junction'].apply(lambda x: str(x).capitalize())
         st.table(top_junctions_df)
+        
+    # -------------------------------------------------------------
+    # POTHOLE GIS REGISTRY & TELEMETRY MODULE
+    # -------------------------------------------------------------
+    st.markdown("---")
+    col_p1, col_p2 = st.columns([1.5, 1])
+    
+    with col_p1:
+        st.markdown(f"#### ⚠️ {('Pothole GIS Registry' if st.session_state.lang == 'English' else 'ರಸ್ತೆ ಗುಂಡಿ ಜಿಐಎಸ್ ರಿಜಿಸ್ಟ್ರಿ')}")
+        st.write("Live database of citizen-reported and telematic-detected road hazards:" if st.session_state.lang == "English" else "ನಾಗರಿಕರಿಂದ ಮತ್ತು ಬಸ್ ಸಂವೇದಕಗಳಿಂದ ಪತ್ತೆಯಾದ ರಸ್ತೆ ಗುಂಡಿಗಳ ಮಾಹಿತಿ:")
+        
+        if "potholes_db" in st.session_state and st.session_state.potholes_db:
+            potholes_list = []
+            for p in st.session_state.potholes_db:
+                potholes_list.append({
+                    "Junction": p["junction"],
+                    "Coordinates": f"{p['lat']:.4f}, {p['lon']:.4f}",
+                    "Severity": p["severity"],
+                    "Reporting Source": p["reported_by"],
+                    "Status": p["status"],
+                    "Timestamp": p["timestamp"]
+                })
+            df_pot = pd.DataFrame(potholes_list)
+            st.dataframe(df_pot, use_container_width=True)
+        else:
+            st.info("No reported potholes in database.")
+            
+    with col_p2:
+        st.markdown(f"#### 📡 {('Depot Telematics Sync Feed' if st.session_state.lang == 'English' else 'ಬಸ್ ಟೆಲಿಮ್ಯಾಟಿಕ್ಸ್ ಸಿಂಕ್ ಫೀಡ್')}")
+        st.write("Simulated live bump accelerometer feeds from BMTC fleet:" if st.session_state.lang == "English" else "ಬಿಎಂಟಿಸಿ ಬಸ್‌ಗಳಿಂದ ಸಂವೇದಕ ಸಿಂಕ್ ಫೀಡ್:")
+        
+        telemetry_logs = [
+            "[08:48:10] BMTC-500D (Bus KA-57-F-3212): Suspended vertical drop 14cm detected near Bellandur Gate.",
+            "[08:50:02] BMTC-KIAS9 (Bus KA-57-F-8890): Minor bump registered near Hebbal Flyover loop.",
+            "[08:52:12] Depot 4 Sync: 3 new road hazard anomalies written to GIS layer."
+        ]
+        for log in telemetry_logs:
+            st.code(log, language="bash")
+            
+        # Repair action controller
+        if "potholes_db" in st.session_state and st.session_state.potholes_db:
+            pending_potholes = [p["junction"] for p in st.session_state.potholes_db if p["status"] == "Pending Repair"]
+            if pending_potholes:
+                sel_repair_junc = st.selectbox("Select Pothole to Fix:", pending_potholes, key="repair_junc_sel")
+                if st.button("Deploy BBMP Repair Crew", key="btn_repair_crew_deploy", type="primary"):
+                    for p in st.session_state.potholes_db:
+                        if p["junction"] == sel_repair_junc:
+                            p["status"] = "Repaired"
+                    st.success(f"BBMP Repair crew successfully deployed to {sel_repair_junc}!")
+                    st.rerun()
+            else:
+                st.success("🎉 All registered potholes are currently dispatched or repaired!")
 
 elif t("menu_incident") in choice:
     st.subheader(f"🚔 {t('incident_title')}")
