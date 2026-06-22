@@ -512,30 +512,6 @@ st.markdown(f"""
         box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.18) !important;
     }}
     
-    [data-testid="stSidebar"] div[data-baseweb="select"] {{
-        background-color: rgba(255, 255, 255, 0.06) !important;
-        border: 2px solid rgba(255, 255, 255, 0.15) !important;
-        border-radius: 12px !important;
-        transition: all 0.3s ease !important;
-    }}
-    [data-testid="stSidebar"] div[data-baseweb="select"] * {{
-        color: #f8fafc !important;
-    }}
-    [data-testid="stSidebar"] div[data-baseweb="select"] [data-baseweb="tag"] * {{
-        color: #ffffff !important;
-    }}
-    [data-testid="stSidebar"] div[data-baseweb="select"] [data-baseweb="tag"] {{
-        background-color: #FF9933 !important;
-    }}
-    [data-testid="stSidebar"] div[data-baseweb="select"]:hover {{
-        border-color: rgba(255, 255, 255, 0.4) !important;
-        background-color: rgba(255, 255, 255, 0.1) !important;
-    }}
-    [data-testid="stSidebar"] div[data-baseweb="select"]:focus-within {{
-        border-color: #FF9933 !important;
-        box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.25) !important;
-    }}
-    
     /* Premium Dropdown Listbox Popover styling */
     ul[role="listbox"] {{
         background-color: #ffffff !important;
